@@ -198,6 +198,18 @@
 
   // ---- Navigation -------------------------------------------------------
 
+  const PAGE_HEADINGS = {
+    overview: {
+      title: "Workflow Funnel Dashboard",
+      subtitle:
+        "Identify workflow completion and drop-off opportunities across organizations and time periods.",
+    },
+    import: {
+      title: "Import & Validate",
+      subtitle: "",
+    },
+  };
+
   function setupNav() {
     const links = document.querySelectorAll(".nav-link");
     links.forEach((link) => {
@@ -208,8 +220,11 @@
         document.querySelectorAll(".view").forEach((v) => {
           v.hidden = v.id !== `view-${view}`;
         });
-        el("page-title").textContent =
-          view === "import" ? "Import & Validate" : "Workflow Overview";
+        const heading = PAGE_HEADINGS[view] || PAGE_HEADINGS.overview;
+        el("page-title").textContent = heading.title;
+        const subtitleEl = el("page-subtitle");
+        subtitleEl.textContent = heading.subtitle;
+        subtitleEl.hidden = !heading.subtitle;
         if (view === "import") {
           loadActiveDatasetDetail();
         }
@@ -276,7 +291,20 @@
     tbody.innerHTML = `<tr><td colspan="5" class="empty-row">Loading…</td></tr>`;
     const res = await fetch(`/api/workflows${qs(currentFilters())}`);
     const rows = await res.json();
+    state.workflowRows = rows;
     renderWorkflowTable(rows);
+    renderCompletionChart(rows);
+    renderKpis(rows);
+  }
+
+  function sortByCompletionRateAscending(rows) {
+    return [...rows].sort((a, b) => {
+      const ra = a.workflow_completion_rate;
+      const rb = b.workflow_completion_rate;
+      if (ra === null) return 1;
+      if (rb === null) return -1;
+      return ra - rb;
+    });
   }
 
   function renderWorkflowTable(rows) {
@@ -286,17 +314,11 @@
       tbody.innerHTML = `<tr><td colspan="5" class="empty-row">No data for the active filter scope.</td></tr>`;
       return;
     }
-    const sorted = [...rows].sort((a, b) => {
-      const ra = a.workflow_completion_rate;
-      const rb = b.workflow_completion_rate;
-      if (ra === null) return 1;
-      if (rb === null) return -1;
-      return ra - rb;
-    });
-    sorted.forEach((row) => {
+    sortByCompletionRateAscending(rows).forEach((row) => {
       const tr = document.createElement("tr");
       tr.className = "is-selectable";
       tr.tabIndex = 0;
+      tr.dataset.workflowName = row.workflow_name;
       tr.setAttribute("role", "button");
       tr.setAttribute(
         "aria-label",
@@ -314,6 +336,7 @@
       `;
       const select = () => {
         state.selectedWorkflow = row.workflow_name;
+        openModal();
         loadFunnel();
       };
       tr.addEventListener("click", select);
@@ -327,73 +350,183 @@
     });
   }
 
+  // ---- Completion chart (horizontal bars) ---------------------------------
+
+  function renderCompletionChart(rows) {
+    const chart = el("completion-chart");
+    chart.innerHTML = "";
+    if (!rows.length) {
+      chart.innerHTML = `<p class="empty-row">No data for the active filter scope.</p>`;
+      return;
+    }
+    sortByCompletionRateAscending(rows).forEach((row) => {
+      const pct =
+        row.workflow_completion_rate === null
+          ? 0
+          : Math.max(0, Math.min(100, row.workflow_completion_rate * 100));
+      const line = document.createElement("div");
+      line.className = "chart-row";
+      line.innerHTML = `
+        <span class="chart-label" title="${row.workflow_name}">${row.workflow_name}</span>
+        <span class="chart-bar-track">
+          <span class="chart-bar-fill" style="width:${pct}%"></span>
+        </span>
+        <span class="chart-value">${formatPercent(row.workflow_completion_rate)}</span>
+      `;
+      chart.appendChild(line);
+    });
+  }
+
+  // ---- KPI summary cards ----------------------------------------------------
+
+  function renderKpis(rows) {
+    const totalStarted = rows.reduce((sum, r) => sum + (r.workflow_started || 0), 0);
+    const totalCompleted = rows.reduce((sum, r) => sum + (r.workflow_completed || 0), 0);
+    // Sum counts first, then compute the ratio (per METRIC_LOGIC.md convention) —
+    // never average the per-workflow completion rates.
+    const overallRate = totalStarted > 0 ? totalCompleted / totalStarted : null;
+
+    el("kpi-active-workflows").textContent = formatInt(rows.length);
+    el("kpi-total-started").textContent = formatInt(totalStarted);
+    el("kpi-total-completed").textContent = formatInt(totalCompleted);
+    el("kpi-completion-rate").textContent = rows.length ? formatPercent(overallRate) : "no data";
+  }
+
+  // ---- Modal ---------------------------------------------------------------
+
+  function openModal() {
+    const modal = el("funnel-modal");
+    modal.hidden = false;
+    document.body.classList.add("modal-open");
+    el("modal-close-x").focus();
+  }
+
+  function closeModal() {
+    const modal = el("funnel-modal");
+    modal.hidden = true;
+    document.body.classList.remove("modal-open");
+    // Look up the trigger by workflow name rather than keeping a DOM
+    // reference, since the table row is rebuilt on every data refresh.
+    const trigger =
+      state.selectedWorkflow &&
+      document.querySelector(
+        `tr[data-workflow-name="${CSS.escape(state.selectedWorkflow)}"] .btn`
+      );
+    if (trigger) trigger.focus();
+  }
+
+  function setupModal() {
+    const modal = el("funnel-modal");
+    el("modal-close-x").addEventListener("click", closeModal);
+    el("modal-close-footer").addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) closeModal();
+    });
+  }
+
   // ---- Funnel detail -------------------------------------------------------
 
   async function loadFunnel() {
     if (!state.selectedWorkflow) return;
-    const tbody = el("funnel-table-body");
-    tbody.innerHTML = `<tr><td colspan="6" class="empty-row">Loading…</td></tr>`;
-    const params = { ...currentFilters() };
-    const res = await fetch(
-      `/api/funnel${qs(params)}&workflow_name=${encodeURIComponent(state.selectedWorkflow)}`
-    );
+    el("selected-workflow-name").textContent = state.selectedWorkflow;
+    el("funnel-viz").innerHTML = `<p class="card-hint">Loading…</p>`;
+    el("funnel-table-body").innerHTML = `<tr><td colspan="6" class="empty-row">Loading…</td></tr>`;
+    renderWorkflowTable(state.workflowRows || []);
+
+    const params = { ...currentFilters(), workflow_name: [state.selectedWorkflow] };
+    const res = await fetch(`/api/funnel${qs(params)}`);
     const data = await res.json();
     renderFunnel(data);
   }
 
+  function renderDetailKpis(data) {
+    const overviewRow = (state.workflowRows || []).find(
+      (r) => r.workflow_name === state.selectedWorkflow
+    );
+    el("detail-completion-rate").textContent = overviewRow
+      ? formatPercent(overviewRow.workflow_completion_rate)
+      : "no data";
+    el("detail-total-started").textContent = overviewRow
+      ? formatInt(overviewRow.workflow_started)
+      : "no data";
+    el("detail-total-completed").textContent = overviewRow
+      ? formatInt(overviewRow.workflow_completed)
+      : "no data";
+    const h = data.highest_dropoff_step;
+    el("detail-highest-dropoff").textContent = h
+      ? `Step ${h.step_order} — ${h.step_name} (${formatPercent(h.step_dropoff_rate)})`
+      : "no data";
+  }
+
+  function renderFunnelViz(steps, highestDropoffStep) {
+    const viz = el("funnel-viz");
+    viz.innerHTML = "";
+    const maxStarted = steps[0] ? steps[0].step_started : 0;
+    steps.forEach((step) => {
+      const isHighest =
+        highestDropoffStep && step.step_order === highestDropoffStep.step_order;
+      const totalPct = maxStarted ? (step.step_started / maxStarted) * 100 : 0;
+      const completedShare = step.step_started ? step.step_completed / step.step_started : 0;
+      const dropoffShare = step.step_started ? step.step_dropoff_count / step.step_started : 0;
+
+      const row = document.createElement("div");
+      row.className = "funnel-step" + (isHighest ? " is-highest" : "");
+      row.innerHTML = `
+        <div class="funnel-step-label">
+          <span class="funnel-step-order">Step ${step.step_order}</span>
+          <span class="funnel-step-name">${step.step_name}${isHighest ? " ⚠ highest drop-off" : ""}</span>
+        </div>
+        <div class="funnel-bar-outer">
+          <div class="funnel-bar-inner" style="width:${totalPct}%">
+            <span class="funnel-bar-completed" style="flex-grow:${Math.max(completedShare, 0.0001)}"></span>
+            <span class="funnel-bar-dropoff" style="flex-grow:${Math.max(dropoffShare, 0.0001)}"></span>
+          </div>
+        </div>
+        <div class="funnel-step-values">
+          <span>Started <strong>${formatInt(step.step_started)}</strong></span>
+          <span>Completed <strong>${formatInt(step.step_completed)}</strong></span>
+          <span class="is-dropoff-text">Drop-off <strong>${formatInt(step.step_dropoff_count)}</strong> (${formatPercent(step.step_dropoff_rate)})</span>
+        </div>
+      `;
+      viz.appendChild(row);
+    });
+  }
+
   function renderFunnel(data) {
     const tbody = el("funnel-table-body");
-    const callout = el("highest-dropoff-callout");
-    el("funnel-card").querySelector(".card-hint").textContent =
+    el("funnel-scope-hint").textContent =
       `Ordered steps for "${state.selectedWorkflow}" within the active filter scope.`;
 
+    renderDetailKpis(data);
+
     if (!data.steps.length) {
+      el("funnel-viz").innerHTML = `<p class="empty-row">No data for this workflow in the active filter scope.</p>`;
       tbody.innerHTML = `<tr><td colspan="6" class="empty-row">No data for this workflow in the active filter scope.</td></tr>`;
-      callout.hidden = true;
       return;
     }
 
-    const maxStarted = Math.max(...data.steps.map((s) => s.step_started));
+    renderFunnelViz(data.steps, data.highest_dropoff_step);
+
     tbody.innerHTML = "";
     data.steps.forEach((step) => {
       const isHighest =
         data.highest_dropoff_step &&
         step.step_order === data.highest_dropoff_step.step_order;
       const tr = document.createElement("tr");
-      if (isHighest) tr.classList.add("is-selected");
-      const dropoffWidth = step.step_started
-        ? Math.round((step.step_dropoff_count / maxStarted) * 100)
-        : 0;
+      if (isHighest) tr.classList.add("is-highest-dropoff");
       tr.innerHTML = `
         <td>${step.step_order}</td>
         <td>${step.step_name}${isHighest ? " ⚠" : ""}</td>
         <td>${formatInt(step.step_started)}</td>
         <td>${formatInt(step.step_completed)}</td>
-        <td>
-          <div class="bar-cell">
-            <span>${formatInt(step.step_dropoff_count)}</span>
-            <span class="bar-track"><span class="bar-fill is-dropoff" style="width:${dropoffWidth}%"></span></span>
-          </div>
-        </td>
+        <td>${formatInt(step.step_dropoff_count)}</td>
         <td>${formatPercent(step.step_dropoff_rate)}</td>
       `;
       tbody.appendChild(tr);
     });
-
-    if (data.highest_dropoff_step) {
-      const h = data.highest_dropoff_step;
-      callout.hidden = false;
-      callout.innerHTML = `
-        <span class="callout-icon" aria-hidden="true">⚠</span>
-        <span>
-          <strong>Highest observed drop-off: Step ${h.step_order} — ${h.step_name}</strong>
-          (${formatPercent(h.step_dropoff_rate)} of ${formatInt(h.step_started)} started counts did not complete this step).
-          This is an investigation target, not proof of a UX root cause.
-        </span>
-      `;
-    } else {
-      callout.hidden = true;
-    }
   }
 
   // ---- Filter actions ------------------------------------------------------
@@ -456,6 +589,7 @@
     setupCombos();
     setupFilterActions();
     setupUpload();
+    setupModal();
     await loadStatus();
     await loadFilters();
     await loadWorkflows();

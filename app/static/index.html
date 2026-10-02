@@ -31,7 +31,10 @@
 
   <div class="main">
     <header class="topbar">
-      <h1 class="page-title" id="page-title">Workflow Overview</h1>
+      <div class="topbar-heading">
+        <h1 class="page-title" id="page-title">Workflow Funnel Dashboard</h1>
+        <p class="page-subtitle" id="page-subtitle">Identify workflow completion and drop-off opportunities across organizations and time periods.</p>
+      </div>
       <div id="dataset-chip" class="dataset-chip" role="status" aria-live="polite">
         No active dataset
       </div>
@@ -95,47 +98,46 @@
           </div>
         </div>
 
-        <div class="card">
-          <h2 class="card-title">Workflow completion performance</h2>
-          <p class="card-hint">Final-step completed count ÷ first-step started count, within the active filter scope. Counts are aggregate source counts, not unique users.</p>
-          <div class="table-wrap">
-            <table class="data-table" id="workflow-table">
-              <thead>
-                <tr>
-                  <th scope="col">Workflow</th>
-                  <th scope="col">Started</th>
-                  <th scope="col">Completed</th>
-                  <th scope="col">Completion rate</th>
-                  <th scope="col"><span class="sr-only">Select</span></th>
-                </tr>
-              </thead>
-              <tbody id="workflow-table-body">
-                <tr><td colspan="5" class="empty-row">Loading…</td></tr>
-              </tbody>
-            </table>
+        <div class="kpi-grid" id="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Active Workflows</span>
+            <span class="kpi-value" id="kpi-active-workflows">—</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Total Started</span>
+            <span class="kpi-value" id="kpi-total-started">—</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Total Completed</span>
+            <span class="kpi-value" id="kpi-total-completed">—</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Overall Completion Rate</span>
+            <span class="kpi-value" id="kpi-completion-rate">—</span>
           </div>
         </div>
 
-        <div class="card" id="funnel-card">
-          <h2 class="card-title">Selected workflow funnel detail</h2>
-          <p class="card-hint">Select a workflow above to see its ordered step funnel.</p>
-          <div id="highest-dropoff-callout" class="callout" hidden></div>
-          <div class="table-wrap">
-            <table class="data-table" id="funnel-table">
-              <thead>
-                <tr>
-                  <th scope="col">Step</th>
-                  <th scope="col">Step name</th>
-                  <th scope="col">Started</th>
-                  <th scope="col">Completed</th>
-                  <th scope="col">Drop-off count</th>
-                  <th scope="col">Drop-off rate</th>
-                </tr>
-              </thead>
-              <tbody id="funnel-table-body">
-                <tr><td colspan="6" class="empty-row">No workflow selected.</td></tr>
-              </tbody>
-            </table>
+        <div class="card">
+          <h2 class="card-title">Workflow completion performance</h2>
+          <p class="card-hint">Final-step completed count ÷ first-step started count, within the active filter scope. Counts are aggregate source counts, not unique users.</p>
+          <div class="completion-layout">
+            <div class="completion-chart" id="completion-chart" aria-hidden="true"></div>
+            <div class="table-wrap">
+              <table class="data-table" id="workflow-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Workflow</th>
+                    <th scope="col">Started</th>
+                    <th scope="col">Completed</th>
+                    <th scope="col">Completion Rate</th>
+                    <th scope="col">View funnel</th>
+                  </tr>
+                </thead>
+                <tbody id="workflow-table-body">
+                  <tr><td colspan="5" class="empty-row">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -165,6 +167,64 @@
       </section>
 
     </main>
+  </div>
+</div>
+
+<div id="funnel-modal" class="modal-overlay" hidden>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="selected-workflow-name">
+    <div class="modal-header">
+      <div class="detail-header">
+        <span class="card-hint">Selected workflow</span>
+        <h2 id="selected-workflow-name">—</h2>
+      </div>
+      <button type="button" class="modal-close-btn" id="modal-close-x" aria-label="Close funnel detail">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="kpi-grid kpi-grid--detail">
+        <div class="kpi-card">
+          <span class="kpi-label">Completion Rate</span>
+          <span class="kpi-value" id="detail-completion-rate">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Total Started</span>
+          <span class="kpi-value" id="detail-total-started">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Total Completed</span>
+          <span class="kpi-value" id="detail-total-completed">—</span>
+        </div>
+        <div class="kpi-card kpi-card--warning">
+          <span class="kpi-label">Highest Drop-off Step</span>
+          <span class="kpi-value kpi-value--small" id="detail-highest-dropoff">—</span>
+        </div>
+      </div>
+
+      <h3 class="section-subtitle">Funnel</h3>
+      <p class="card-hint" id="funnel-scope-hint"></p>
+      <div class="funnel-viz" id="funnel-viz"></div>
+
+      <h3 class="section-subtitle">Step detail</h3>
+      <div class="table-wrap">
+        <table class="data-table" id="funnel-table">
+          <thead>
+            <tr>
+              <th scope="col">Step</th>
+              <th scope="col">Step Name</th>
+              <th scope="col">Started</th>
+              <th scope="col">Completed</th>
+              <th scope="col">Drop-off Count</th>
+              <th scope="col">Drop-off Rate</th>
+            </tr>
+          </thead>
+          <tbody id="funnel-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-ghost" id="modal-close-footer">Close</button>
+    </div>
   </div>
 </div>
 

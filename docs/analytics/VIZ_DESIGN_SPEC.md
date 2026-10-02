@@ -11,6 +11,14 @@
 
 Avoid animation, multi-axis charts, and decorative custom chart behavior for the MVP.
 
+**Implemented (current MVP):** the workflow comparison is a horizontal bar
+chart (single accent color, no threshold-based coloring since no calibrated
+threshold is supplied) paired with the required table. The funnel is
+rendered as ordered step bars whose width represents progression through
+the funnel, each split into a completed segment and a drop-off segment; the
+exact numeric values are always shown as text alongside every bar. No
+animation is used anywhere.
+
 ## Color & Theme Spec
 
 Reuse the supplied Ragnar NPS visual language only as a presentation reference:
@@ -35,6 +43,13 @@ Core interactions:
 
 Changing a filter or workflow must recompute all displayed metrics from the same active filter scope.
 
+**Implemented (current MVP):** `period_month` and `organization_id` filters
+are searchable multi-select comboboxes (type to filter, click/Enter to
+select, selections shown as removable chips, per-field clear action plus
+the page-level "Apply filters"/"Clear filters" buttons). Empty selection
+still means all values, and the underlying API request format is unchanged
+(repeated `organization_id`/`period_month` query parameters).
+
 ## Accessibility Guidelines
 
 - keyboard-accessible upload, filters, and workflow selector
@@ -43,6 +58,12 @@ Changing a filter or workflow must recompute all displayed metrics from the same
 - do not encode pass/fail or highest-drop-off using color alone
 - preserve readable contrast from the existing design reference; verify in the implemented theme
 - funnel remains understandable when charts fail by retaining a tabular/value representation
+
+**Implemented (current MVP):** the organization/month comboboxes support
+arrow-key navigation, Enter to select, Escape to close, and Backspace to
+remove the last chip; the highest-drop-off step is marked with both a red
+visual treatment and a ⚠ text/aria label, not color alone; the step detail
+table is always rendered alongside the funnel visualization.
 
 ## Data Literacy Guard Rails
 

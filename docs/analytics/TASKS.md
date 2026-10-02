@@ -1,5 +1,21 @@
 # TASKS.md
 
+## Status (current implementation)
+
+- [x] 1. bootstrap the app using the existing UX reference without importing NPS domain logic
+- [x] 2. implement CSV upload and validation rules from `DATA_QUALITY.md`
+- [x] 3. implement DuckDB persistence from `PIPELINE_SPEC.md`
+- [x] 4. implement metric queries from `METRIC_LOGIC.md`
+- [x] 5. build workflow overview
+- [x] 6. build selected-workflow funnel detail
+- [x] 7. add highest-drop-off callout
+- [x] 8. add automated test/validation command
+- [x] 9. add Docker/Coolify runtime configuration
+- [ ] 10. run smoke test, push to company repo, deploy — local smoke test and
+      Docker container smoke test done; push/deploy still pending a company
+      repository URL
+- [ ] 11. optional AI Investigation Brief — not started (bonus, deferred)
+
 ## Task Breakdown
 
 1. bootstrap the app using the existing UX reference without importing NPS domain logic
@@ -44,6 +60,11 @@ Core delivery is done when:
 - at least one automated Test or Validation passes
 - deployment opens successfully through Coolify
 - source is pushed to the company repository
+
+Current state: all items above are satisfied except the last two — the
+Dockerfile has been container-smoke-tested locally (same startup command
+Coolify would run), but it has not yet been deployed to an actual Coolify
+instance or pushed to the company repository (no remote configured yet).
 
 ## Assignments and Estimates
 

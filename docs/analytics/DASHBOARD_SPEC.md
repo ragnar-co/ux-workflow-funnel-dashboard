@@ -28,6 +28,18 @@ For the active organization/month filter scope, show each `workflow_name` with:
 
 Allow workflow selection from this view.
 
+**Implemented (current MVP):** a KPI summary row above this section shows
+Active Workflows (count of workflows returned for the active scope), Total
+Started, Total Completed, and Overall Completion Rate — the latter three
+computed client-side from the same `/api/workflows` response by summing
+counts first and then dividing (per `METRIC_LOGIC.md`'s "sum counts first,
+then calculate ratios" rule), not by averaging per-workflow rates. This is
+not a new backend metric; it reuses the existing per-workflow
+`workflow_started`/`workflow_completed` values already served by the
+existing API. The workflow list itself is rendered as a horizontal bar
+chart (completion rate per workflow) alongside the required table, with a
+"View funnel" action per row.
+
 ### Selected Workflow Funnel Detail
 
 For the chosen workflow, render ascending steps with:
@@ -40,6 +52,17 @@ For the chosen workflow, render ascending steps with:
 - `step_dropoff_rate`
 
 Show a separate textual callout for `highest_dropoff_step`.
+
+**Implemented (current MVP):** this section also shows a small KPI row for
+the selected workflow (Completion Rate, Total Started, Total Completed —
+looked up from the already-fetched workflow overview row — and Highest
+Drop-off Step), a visual step funnel (bar width represents progression
+through the funnel; each step's bar is split into a completed segment and a
+drop-off segment, no animation), and the ordered step table. The
+highest-drop-off step is highlighted with a red warning treatment (card,
+funnel bar, and table row) rather than color alone — the step name is also
+marked with a ⚠ text indicator. Before a workflow is selected, a plain
+neutral empty-state message is shown instead of the funnel/table.
 
 ## Metric Coverage Matrix
 

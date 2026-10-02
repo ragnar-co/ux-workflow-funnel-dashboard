@@ -131,19 +131,35 @@ input:focus-visible {
 }
 
 .topbar {
-  height: var(--topbar-height);
-  flex: 0 0 var(--topbar-height);
+  min-height: var(--topbar-height);
+  flex: 0 0 auto;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-line);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--page-padding);
+  gap: var(--card-gap);
+  padding: 14px var(--page-padding);
+  flex-wrap: wrap;
+}
+
+.topbar-heading {
+  min-width: 0;
 }
 
 .page-title {
   font-size: 18px;
   margin: 0;
+}
+
+.page-subtitle {
+  margin: 2px 0 0 0;
+  color: var(--color-muted);
+  font-size: 12.5px;
+}
+
+.page-subtitle[hidden] {
+  display: none;
 }
 
 .dataset-chip {
@@ -175,6 +191,10 @@ input:focus-visible {
   border-radius: var(--radius-card);
   border: 1px solid var(--color-line);
   padding: 20px;
+}
+
+.filter-card {
+  margin-bottom: var(--card-gap);
 }
 
 .card-title {
@@ -429,49 +449,281 @@ select[multiple] {
   background: var(--color-blue-soft);
 }
 
+.data-table tbody tr.is-highest-dropoff {
+  background: var(--color-red-soft);
+  box-shadow: inset 3px 0 0 var(--color-red);
+}
+
 .empty-row {
   color: var(--color-muted);
   text-align: center;
 }
 
-.bar-cell {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* KPI summary cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--card-gap);
+  margin-bottom: var(--card-gap);
 }
 
-.bar-track {
-  flex: 1;
-  min-width: 80px;
-  height: 8px;
+.kpi-grid--detail {
+  margin-bottom: 20px;
+}
+
+.kpi-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kpi-label {
+  color: var(--color-muted);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+}
+
+.kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.kpi-value--small {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.kpi-card--warning {
+  background: var(--color-red-soft);
+  border-color: var(--color-red);
+}
+
+.kpi-card--warning .kpi-label,
+.kpi-card--warning .kpi-value {
+  color: var(--color-red);
+}
+
+/* Workflow completion performance: chart + table */
+.completion-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.completion-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: minmax(100px, 160px) 1fr 56px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+}
+
+.chart-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chart-bar-track {
+  height: 10px;
   border-radius: 999px;
-  background: var(--color-line);
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
   overflow: hidden;
 }
 
-.bar-fill {
+.chart-bar-fill {
+  display: block;
   height: 100%;
   background: var(--color-blue);
+  border-radius: 999px;
 }
 
-.bar-fill.is-dropoff {
-  background: var(--color-red);
+.chart-value {
+  text-align: right;
+  font-weight: 600;
 }
 
-.callout {
+/* Funnel detail modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 32, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 100;
+}
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal-dialog {
+  background: var(--color-surface);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 760px;
+  max-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 20px 0 20px;
+  flex: 0 0 auto;
+}
+
+.modal-close-btn {
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: var(--radius-button);
+}
+
+.modal-close-btn:hover {
+  color: var(--color-red);
+  background: var(--color-bg);
+}
+
+.modal-body {
+  padding: 16px 20px 20px 20px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.modal-footer {
+  flex: 0 0 auto;
+  padding: 12px 20px;
+  border-top: 1px solid var(--color-line);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.detail-header {
   margin-bottom: 16px;
-  background: var(--color-amber-soft);
-  border: 1px solid var(--color-amber);
+}
+
+.detail-header h2 {
+  margin: 2px 0 0 0;
+  font-size: 18px;
+}
+
+.section-subtitle {
+  margin: 20px 0 10px 0;
+  font-size: 13px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Funnel visualization */
+.funnel-viz {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.funnel-step {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: var(--radius-button);
+}
+
+.funnel-step.is-highest {
+  background: var(--color-red-soft);
+  box-shadow: inset 3px 0 0 var(--color-red);
+}
+
+.funnel-step-label {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
   font-size: 13px;
 }
 
-.callout-icon {
+.funnel-step-order {
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.funnel-step-name {
+  font-weight: 600;
+}
+
+.funnel-step.is-highest .funnel-step-name {
+  color: var(--color-red);
+}
+
+.funnel-bar-outer {
+  height: 16px;
+  width: 100%;
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.funnel-bar-inner {
+  display: flex;
+  height: 100%;
+}
+
+.funnel-bar-completed {
+  background: var(--color-blue);
+}
+
+.funnel-bar-dropoff {
+  background: var(--color-red);
+}
+
+.funnel-step-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.funnel-step-values strong {
+  color: var(--color-text);
   font-weight: 700;
+}
+
+.is-dropoff-text strong {
+  color: var(--color-red);
 }
 
 .status-pill {
@@ -549,4 +801,8 @@ select[multiple] {
   .shell { flex-direction: column; }
   .sidebar { width: 100%; flex-basis: auto; }
   .filter-row { flex-direction: column; }
+  .chart-row { grid-template-columns: 1fr; }
+  .chart-value { text-align: left; }
+  .modal-overlay { padding: 0; }
+  .modal-dialog { max-width: 100%; max-height: 100vh; height: 100%; border-radius: 0; }
 }

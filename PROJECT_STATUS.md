@@ -31,11 +31,40 @@
 
 Core implementation specs are present through `DASHBOARD_SPEC.md` and `TASKS.md` under `docs/analytics/`.
 
+## Implementation status (current)
+
+- Application framework: FastAPI (Python) + DuckDB (`duckdb` Python package)
+  + vanilla JS/CSS frontend (no build step), chosen for the 120-minute
+  delivery window and Coolify compatibility.
+- CSV upload + validation implemented (`app/validation.py` reuses
+  `scripts/validate_input.py`'s rules); a failed upload never replaces the
+  active dataset.
+- DuckDB persistence implemented at `data/app/ux_workflow_funnel.duckdb`
+  (`app/db.py`): atomic staging-table replace, `import_meta` tracks the
+  active dataset's file/row/workflow counts.
+- Metric queries implemented per `METRIC_LOGIC.md` (`app/metrics.py`):
+  workflow completion rate, step drop-off count/rate, highest-drop-off
+  step (lowest-`step_order` tie-break).
+- Dashboard UI implemented and redesigned: searchable multi-select
+  organization/month filters, KPI summary cards, workflow completion bar
+  chart + table, selected-workflow funnel visualization with a highlighted
+  highest-drop-off step.
+- Automated tests: 7 `pytest` tests passing — golden-fixture metric
+  validation, full pipeline integration (temp DuckDB), invalid-CSV
+  rejection. Run via `python3 -m pytest tests/ -q`.
+- Dockerfile built and container-smoke-tested locally (same startup command
+  Coolify would use).
+- Git initialized locally with commits; **not yet pushed** — no company
+  repository remote configured yet.
+- AI Investigation Brief (bonus): **not implemented**, optional, deferred
+  per the project rule that it only starts after the core dashboard passes.
+
 ## Still implementation-specific / not supplied
 
-- application framework
-- company repository provider and branch/PR requirements
-- Coolify deployment convention used by the company
+- company repository URL and branch/PR requirements
+- Coolify project/volume-mount configuration used by the company (the
+  Dockerfile declares a volume at `/srv/app/data/app`; it still needs to be
+  mounted in the actual Coolify service)
 - AI endpoint schema, auth method, model identifier, and quota for bonus work
 - calibrated quality/anomaly/freshness/retention/cost/model thresholds not provided by the assignment
 
