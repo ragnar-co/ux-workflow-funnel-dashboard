@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "LINE Seed Sans TH";
+  src:
+    url("/fonts/LINESeedSansTH_W_Rg.woff2") format("woff2"),
+    url("/fonts/LINESeedSansTH_W_Rg.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LINE Seed Sans TH";
+  src:
+    url("/fonts/LINESeedSansTH_W_Bd.woff2") format("woff2"),
+    url("/fonts/LINESeedSansTH_W_Bd.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "LINE Seed Sans TH", Inter, "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif;
+
+  --color-workspace: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-ink: #2F3A4A;
+  --color-muted: #8A95A8;
+  --color-line: #E7EBF0;
+
+  --color-brand-blue: #2F80ED;
+  --color-brand-blue-soft: #EAF4FF;
+  --color-brand-cyan: #67C7D5;
+  --color-brand-cyan-soft: #DFF5F8;
+  --color-ragnar-red: #F04141;
+  --color-ragnar-red-soft: #FFE5E8;
+  --color-brand-pink: #F65F99;
+  --color-brand-pink-soft: #FDE4EB;
+  --color-brand-green: #45C58A;
+  --color-brand-green-soft: #E2F9EF;
+  --color-brand-amber: #F7B733;
+  --color-brand-amber-soft: #FFF4D8;
+
+  --radius-card: 14px;
+  --radius-button: 8px;
+  --radius-input: 8px;
+}
+
+body {
+  background: var(--color-workspace);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .input {
+    @apply w-full min-h-9 rounded-input border border-line bg-surface px-3 py-2 text-sm font-medium text-ink normal-case tracking-normal;
+  }
+
+  .btn-primary {
+    @apply rounded-button bg-brand-blue px-4 py-2 text-sm font-bold text-white transition-colors
+      hover:bg-[#2568c9] active:bg-[#1f56a3]
+      disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  .btn-secondary {
+    @apply rounded-button border border-line bg-surface px-4 py-2 text-sm font-bold text-ink transition-colors
+      hover:bg-workspace hover:border-ink/20
+      disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  .btn-outline-sm {
+    @apply rounded-input border border-line bg-surface px-3 py-2 text-xs font-bold text-ink transition-colors
+      hover:bg-workspace hover:border-ink/20
+      disabled:opacity-40 disabled:pointer-events-none;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-report,
+  .print-report * {
+    visibility: visible;
+  }
+  .print-report {
+    position: absolute;
+    inset: 0;
+    padding: 24px;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

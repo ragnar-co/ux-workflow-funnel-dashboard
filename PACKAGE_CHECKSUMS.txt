@@ -1,0 +1,2 @@
+25c37c2b0dd8ca0668312c7ddcbf2e98e425a3a0c55ee2929e12c44c43ad6cc2  data/raw/numnim_ux_funnel_mock.csv
+80448a4eda2a324dd6f92d4c40a240eece12de7757b796c232794a413bc026cc  scripts/validate_input.py

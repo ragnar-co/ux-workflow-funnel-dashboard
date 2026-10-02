@@ -1,0 +1,8 @@
+ux-reference
+ddd-data-analytics
+docs
+.git
+data/app/*.duckdb
+__pycache__
+*.pyc
+.pytest_cache

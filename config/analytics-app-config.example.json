@@ -1,0 +1,14 @@
+{
+  "appName": "UX Workflow Funnel Dashboard",
+  "locale": "th-TH",
+  "database": "DuckDB",
+  "navigation": [
+    { "id": "dashboard", "label": "Workflow Overview" },
+    { "id": "import", "label": "Import & Validate" }
+  ],
+  "source": {
+    "acceptedFileTypes": [".csv"],
+    "requiredFields": null,
+    "note": "Populate requiredFields only after inspecting the real assignment CSV."
+  }
+}

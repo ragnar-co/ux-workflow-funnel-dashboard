@@ -1,0 +1,4 @@
+organization_id,period_month,workflow_name,step_order,step_name,started_count,completed_count
+ORG-A,2026-01,Demo Flow,1,Start,100,80
+ORG-A,2026-01,Demo Flow,2,Middle,80,20
+ORG-A,2026-01,Demo Flow,3,End,20,10

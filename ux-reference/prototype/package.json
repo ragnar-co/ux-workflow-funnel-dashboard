@@ -1,0 +1,13 @@
+{
+  "name": "ragnar-nps-ddd-webapp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/server.mjs",
+    "check": "node --check src/app.js && node --check src/data.js && node --check src/domain/nps.js && node --check scripts/server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

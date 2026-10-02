@@ -1,0 +1,37 @@
+{
+  "font": {
+    "primary": "LINE Seed Sans Thai",
+    "fallback": "Inter, Noto Sans Thai, Arial, sans-serif"
+  },
+  "color": {
+    "background": "#F4F5F7",
+    "surface": "#FFFFFF",
+    "text": "#2F3A4A",
+    "muted": "#8A95A8",
+    "line": "#E7EBF0",
+    "blue": "#2F80ED",
+    "blueSoft": "#EAF4FF",
+    "cyan": "#67C7D5",
+    "cyanSoft": "#DFF5F8",
+    "ragnarRed": "#F04141",
+    "redSoft": "#FFE5E8",
+    "pink": "#F65F99",
+    "pinkSoft": "#FDE4EB",
+    "green": "#45C58A",
+    "greenSoft": "#E2F9EF",
+    "amber": "#F7B733",
+    "amberSoft": "#FFF4D8"
+  },
+  "radius": {
+    "card": "14px",
+    "button": "8px",
+    "input": "8px"
+  },
+  "layout": {
+    "sidebarWidth": "250px",
+    "topbarHeight": "68px",
+    "pagePadding": "24px",
+    "cardGap": "16px"
+  }
+}
+

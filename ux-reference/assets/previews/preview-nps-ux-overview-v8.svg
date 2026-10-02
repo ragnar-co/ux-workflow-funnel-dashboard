@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <style>
+      .bg { fill: #f4f5f7; }
+      .surface { fill: #ffffff; }
+      .line { stroke: #e7ebf0; stroke-width: 2; }
+      .muted-line { stroke: #d7dee8; stroke-width: 2; }
+      .ink { fill: #2f3a4a; font-family: "LINE Seed Sans TH", "Noto Sans Thai", Arial, sans-serif; font-weight: 700; }
+      .text { fill: #4b586e; font-family: "LINE Seed Sans TH", "Noto Sans Thai", Arial, sans-serif; font-weight: 500; }
+      .muted { fill: #8a95a8; font-family: "LINE Seed Sans TH", "Noto Sans Thai", Arial, sans-serif; font-weight: 500; }
+      .tiny { font-size: 20px; }
+      .small { font-size: 23px; }
+      .body { font-size: 27px; }
+      .title { font-size: 42px; }
+      .blue { fill: #2f80ed; }
+      .blue-soft { fill: #eaf4ff; }
+      .cyan { fill: #67c7d5; }
+      .cyan-soft { fill: #dff5f8; }
+      .pink { fill: #f65f99; }
+      .pink-soft { fill: #fde4eb; }
+      .green { fill: #45c58a; }
+      .green-soft { fill: #e2f9ef; }
+      .amber { fill: #f7b733; }
+      .amber-soft { fill: #fff4d8; }
+      .red { fill: #f04141; }
+      .red-soft { fill: #ffe5e8; }
+      .chip { fill: #f1f4f8; }
+      .shadow { filter: drop-shadow(0 12px 28px rgba(47,58,74,.08)); }
+    </style>
+    <marker id="arrow" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L14,8 L2,14 Z" fill="#9aa6b8"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L14,8 L2,14 Z" fill="#f04141"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1920" height="1080"/>
+  <rect class="surface" x="40" y="34" width="1840" height="1012" rx="28"/>
+  <line class="line" x1="40" y1="112" x2="1880" y2="112"/>
+
+  <g transform="translate(72,54)">
+    <polygon points="0,24 22,8 52,18 62,48 42,70 12,62 -10,34" fill="#2f80ed"/>
+    <polygon points="16,28 32,18 48,30 48,48 32,60 16,52 8,36" fill="#67c7d5"/>
+    <text class="ink" x="82" y="32" font-size="34">NPS Operation Center</text>
+    <text class="muted small" x="82" y="64">UX overview for product NPS, event survey, file upload and closed-loop follow-up</text>
+  </g>
+  <g transform="translate(1502,54)">
+    <rect class="blue-soft" width="320" height="40" rx="20"/>
+    <text class="text tiny" x="160" y="27" text-anchor="middle" fill="#2f80ed">ORGANIZATION: RAGNAR CORPORATION</text>
+  </g>
+
+  <text class="ink title" x="82" y="174">ภาพรวม Flow ที่ควรเป็น</text>
+  <text class="muted body" x="82" y="214">Upload / Manual / Metasurvey → ตรวจข้อมูล → วิเคราะห์ → ติด Tag เดือนและ Quarter → ส่งต่อ Dashboard, Follow-up, Report</text>
+
+  <!-- Stage labels -->
+  <g class="muted tiny">
+    <text x="126" y="288">1. INPUT CHANNEL</text>
+    <text x="486" y="288">2. REVIEW DATA</text>
+    <text x="826" y="288">3. AUTO ANALYZE</text>
+    <text x="1180" y="288">4. TIME TAG</text>
+    <text x="1500" y="288">5. WORKSPACE OUTPUT</text>
+  </g>
+
+  <!-- Input cards -->
+  <g class="shadow">
+    <rect class="surface" x="80" y="314" width="300" height="118" rx="18"/>
+    <circle class="pink-soft" cx="128" cy="372" r="34"/>
+    <rect x="115" y="348" width="26" height="48" rx="5" fill="none" stroke="#f65f99" stroke-width="4"/>
+    <text class="ink body" x="178" y="361">Manual Entry</text>
+    <text class="muted tiny" x="178" y="394">กรอกเองเมื่อข้อมูลน้อย</text>
+  </g>
+  <g class="shadow">
+    <rect class="surface" x="80" y="454" width="300" height="118" rx="18"/>
+    <circle class="cyan-soft" cx="128" cy="512" r="34"/>
+    <path d="M112 500 h32 v34 h-32 z M118 492 h20 l6 8 h-32 z" fill="none" stroke="#16a6b5" stroke-width="4" stroke-linejoin="round"/>
+    <text class="ink body" x="178" y="501">Upload File</text>
+    <text class="muted tiny" x="178" y="534">แนบ CSV / XLSX / Export</text>
+  </g>
+  <g class="shadow">
+    <rect class="surface" x="80" y="594" width="300" height="118" rx="18"/>
+    <circle class="amber-soft" cx="128" cy="652" r="34"/>
+    <path d="M110 652 h36 M128 634 v36 M116 640 c10-12 28-12 38 0 M104 664 c16 16 48 16 64 0" fill="none" stroke="#f7b733" stroke-width="4" stroke-linecap="round"/>
+    <text class="ink body" x="178" y="641">Connect Tool</text>
+    <text class="muted tiny" x="178" y="674">Metasurvey / Form API</text>
+  </g>
+
+  <!-- Arrows -->
+  <line x1="410" y1="514" x2="456" y2="514" stroke="#9aa6b8" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="730" y1="514" x2="776" y2="514" stroke="#9aa6b8" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="1064" y1="514" x2="1110" y2="514" stroke="#9aa6b8" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="1390" y1="514" x2="1438" y2="514" stroke="#f04141" stroke-width="4" marker-end="url(#arrow-red)"/>
+
+  <!-- Review card -->
+  <g class="shadow">
+    <rect class="surface" x="456" y="314" width="274" height="398" rx="18"/>
+    <text class="ink body" x="486" y="358">Preview &amp; Validate</text>
+    <text class="muted tiny" x="486" y="390">เช็กก่อนเอาเข้าระบบ</text>
+    <line class="line" x1="486" y1="420" x2="700" y2="420"/>
+    <g transform="translate(486,448)">
+      <rect class="chip" width="214" height="36" rx="18"/>
+      <text class="text tiny" x="18" y="25">Column Mapping</text>
+    </g>
+    <g transform="translate(486,498)">
+      <rect class="chip" width="214" height="36" rx="18"/>
+      <text class="text tiny" x="18" y="25">Missing Data</text>
+    </g>
+    <g transform="translate(486,548)">
+      <rect class="chip" width="214" height="36" rx="18"/>
+      <text class="text tiny" x="18" y="25">Duplicate Warning</text>
+    </g>
+    <g transform="translate(486,598)">
+      <rect class="chip" width="214" height="36" rx="18"/>
+      <text class="text tiny" x="18" y="25">Confirm Import</text>
+    </g>
+    <rect class="red" x="486" y="654" width="176" height="42" rx="21"/>
+    <text x="574" y="682" text-anchor="middle" fill="#fff" font-family="LINE Seed Sans TH, Noto Sans Thai, Arial, sans-serif" font-size="21" font-weight="700">Analyze File</text>
+  </g>
+
+  <!-- Analyze card -->
+  <g class="shadow">
+    <rect class="surface" x="776" y="314" width="288" height="398" rx="18"/>
+    <text class="ink body" x="806" y="358">Auto Analysis</text>
+    <text class="muted tiny" x="806" y="390">ระบบช่วยสรุปผลทันที</text>
+    <line class="line" x1="806" y1="420" x2="1034" y2="420"/>
+    <g transform="translate(806,446)">
+      <circle class="blue" cx="18" cy="18" r="9"/><text class="text tiny" x="42" y="25">NPS Score</text>
+    </g>
+    <g transform="translate(806,496)">
+      <circle class="pink" cx="18" cy="18" r="9"/><text class="text tiny" x="42" y="25">Promoter / Passive / Detractor</text>
+    </g>
+    <g transform="translate(806,546)">
+      <circle class="amber" cx="18" cy="18" r="9"/><text class="text tiny" x="42" y="25">Theme &amp; Root Cause</text>
+    </g>
+    <g transform="translate(806,596)">
+      <circle class="red" cx="18" cy="18" r="9"/><text class="text tiny" x="42" y="25">Priority Case</text>
+    </g>
+    <g transform="translate(806,646)">
+      <circle class="green" cx="18" cy="18" r="9"/><text class="text tiny" x="42" y="25">Suggested Owner</text>
+    </g>
+  </g>
+
+  <!-- Tag card -->
+  <g class="shadow">
+    <rect class="surface" x="1110" y="314" width="280" height="398" rx="18"/>
+    <text class="ink body" x="1140" y="358">Period Tagging</text>
+    <text class="muted tiny" x="1140" y="390">Auto จาก submitted date</text>
+    <line class="line" x1="1140" y1="420" x2="1360" y2="420"/>
+    <rect class="blue-soft" x="1140" y="450" width="210" height="52" rx="26"/>
+    <text class="text small" x="1245" y="484" text-anchor="middle" fill="#2f80ed">Monthly: Sep 2026</text>
+    <rect class="cyan-soft" x="1140" y="522" width="210" height="52" rx="26"/>
+    <text class="text small" x="1245" y="556" text-anchor="middle" fill="#16a6b5">Quarter: Q3/2026</text>
+    <rect class="amber-soft" x="1140" y="594" width="210" height="52" rx="26"/>
+    <text class="text small" x="1245" y="628" text-anchor="middle" fill="#d59300">Event: Seminar Q3</text>
+    <text class="muted tiny" x="1140" y="682">ผู้ใช้แก้ tag ได้ก่อน Confirm</text>
+  </g>
+
+  <!-- Output cards -->
+  <g class="shadow">
+    <rect class="surface" x="1438" y="314" width="402" height="398" rx="18"/>
+    <text class="ink body" x="1470" y="358">Workspaces</text>
+    <text class="muted tiny" x="1470" y="390">แต่ละบทบาทเห็นสิ่งที่ต้องทำ</text>
+    <line class="line" x1="1470" y1="420" x2="1810" y2="420"/>
+    <g transform="translate(1470,448)">
+      <rect class="blue-soft" width="150" height="44" rx="22"/>
+      <text class="text tiny" x="75" y="29" text-anchor="middle" fill="#2f80ed">Dashboard</text>
+      <text class="muted tiny" x="172" y="29">ดูภาพรวมและ trend</text>
+    </g>
+    <g transform="translate(1470,508)">
+      <rect class="red-soft" width="150" height="44" rx="22"/>
+      <text class="text tiny" x="75" y="29" text-anchor="middle" fill="#f04141">Response</text>
+      <text class="muted tiny" x="172" y="29">จัดการเคส follow-up</text>
+    </g>
+    <g transform="translate(1470,568)">
+      <rect class="cyan-soft" width="150" height="44" rx="22"/>
+      <text class="text tiny" x="75" y="29" text-anchor="middle" fill="#16a6b5">Product</text>
+      <text class="muted tiny" x="172" y="29">ดูตามทีม / owner</text>
+    </g>
+    <g transform="translate(1470,628)">
+      <rect class="green-soft" width="150" height="44" rx="22"/>
+      <text class="text tiny" x="75" y="29" text-anchor="middle" fill="#22a76f">Report</text>
+      <text class="muted tiny" x="172" y="29">Monthly / Q summary</text>
+    </g>
+  </g>
+
+  <!-- Role journey -->
+  <text class="ink body" x="82" y="790">User Journey by Role</text>
+  <text class="muted tiny" x="82" y="824">หน้าแรกและ action ควรเปลี่ยนตามบทบาท เพื่อไม่ให้ผู้ใช้เห็นข้อมูลเยอะเกินจำเป็น</text>
+
+  <g class="shadow">
+    <rect class="surface" x="80" y="858" width="410" height="128" rx="18"/>
+    <rect class="pink-soft" x="106" y="884" width="92" height="40" rx="20"/>
+    <text class="text tiny" x="152" y="911" text-anchor="middle" fill="#f65f99">Owner</text>
+    <text class="ink small" x="220" y="910">NPS Owner</text>
+    <text class="muted tiny" x="220" y="944">Import → Validate → Assign → Report</text>
+  </g>
+  <g class="shadow">
+    <rect class="surface" x="516" y="858" width="410" height="128" rx="18"/>
+    <rect class="red-soft" x="542" y="884" width="92" height="40" rx="20"/>
+    <text class="text tiny" x="588" y="911" text-anchor="middle" fill="#f04141">Caller</text>
+    <text class="ink small" x="656" y="910">Outsource / Caller</text>
+    <text class="muted tiny" x="656" y="944">Today call list → Note → Status</text>
+  </g>
+  <g class="shadow">
+    <rect class="surface" x="952" y="858" width="410" height="128" rx="18"/>
+    <rect class="cyan-soft" x="978" y="884" width="92" height="40" rx="20"/>
+    <text class="text tiny" x="1024" y="911" text-anchor="middle" fill="#16a6b5">Product</text>
+    <text class="ink small" x="1092" y="910">Product Owner</text>
+    <text class="muted tiny" x="1092" y="944">Own product feedback → Action update</text>
+  </g>
+  <g class="shadow">
+    <rect class="surface" x="1388" y="858" width="452" height="128" rx="18"/>
+    <rect class="green-soft" x="1414" y="884" width="112" height="40" rx="20"/>
+    <text class="text tiny" x="1470" y="911" text-anchor="middle" fill="#22a76f">Manager</text>
+    <text class="ink small" x="1548" y="910">Management / Event Owner</text>
+    <text class="muted tiny" x="1548" y="944">Trend → Insight → Monthly/Q report</text>
+  </g>
+</svg>

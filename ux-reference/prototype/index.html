@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ragnar NPS Analytics</title>
+    <link rel="stylesheet" href="./src/fonts.css" />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">R</div>
+        <div>
+          <strong>NPS Analytics</strong>
+          <span>Ragnar Customer Feedback</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard">Dashboard</button>
+        <button class="nav-item" data-view="org">Product & Responsible Team</button>
+        <button class="nav-item" data-view="voc">Voice of Customer</button>
+        <button class="nav-item" data-view="sources">Survey Sources</button>
+      </nav>
+    </aside>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Company NPS Webapp</p>
+          <h1 id="page-title">Customer Feedback Analytics</h1>
+          <p id="page-subtitle">Monitor customer sentiment, product performance and responsible teams.</p>
+        </div>
+        <div class="topbar-actions">
+          <span class="sync-dot"></span>
+          <span id="updated-at">Updated mock data</span>
+          <button class="ghost-button" id="export-json">Export JSON</button>
+        </div>
+      </header>
+
+      <section id="dashboard-view" class="view active">
+        <div class="access-banner">
+          <span class="lock">Private</span>
+          <label>
+            Viewing as
+            <select id="role-filter">
+              <option value="management">Management full access</option>
+              <option value="product_owner">Product owner</option>
+              <option value="ops">Ops / Outsource caller</option>
+            </select>
+          </label>
+          <span>Full access to every product, team and responsible person.</span>
+        </div>
+
+        <section class="filters" aria-label="Dashboard filters">
+          <label>
+            Product
+            <select id="product-filter"></select>
+          </label>
+          <label>
+            Team
+            <select id="team-filter"></select>
+          </label>
+          <label>
+            Responsible
+            <select id="person-filter"></select>
+          </label>
+          <label>
+            Source
+            <select id="source-filter">
+              <option value="all">All Sources</option>
+              <option value="service">Product / Service NPS</option>
+              <option value="event">Event / Workshop NPS</option>
+            </select>
+          </label>
+          <div class="segmented" id="category-filter">
+            <button class="active" data-category="all">All</button>
+            <button data-category="promoter">Promoter</button>
+            <button data-category="passive">Passive</button>
+            <button data-category="detractor">Detractor</button>
+          </div>
+          <button class="link-button" id="reset-filters">Reset Filters</button>
+        </section>
+
+        <section class="metric-grid" id="metric-grid"></section>
+
+        <section class="dashboard-grid">
+          <article class="panel panel-large">
+            <div class="panel-heading">
+              <div>
+                <h2>NPS Trend</h2>
+                <p>Weekly Overall NPS</p>
+              </div>
+              <span class="code-label">metric_overall_nps</span>
+            </div>
+            <div id="trend-chart" class="chart"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>NPS Distribution</h2>
+                <p>Promoter / Passive / Detractor share</p>
+              </div>
+            </div>
+            <div id="distribution"></div>
+          </article>
+        </section>
+
+        <section class="dashboard-grid thirds">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Product Performance</h2>
+                <p>Click a product to drill into teams</p>
+              </div>
+            </div>
+            <div id="product-performance" class="score-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Team Performance</h2>
+                <p>Team-level NPS from current filters</p>
+              </div>
+            </div>
+            <div id="team-performance" class="score-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Responsible Person</h2>
+                <p>Individual performance and follow-up load</p>
+              </div>
+            </div>
+            <div id="person-performance" class="score-list"></div>
+          </article>
+        </section>
+      </section>
+
+      <section id="org-view" class="view">
+        <div class="section-actions">
+          <input id="org-search" type="search" placeholder="Search product, team or person..." />
+          <button class="ghost-button" id="add-team">+ Add Team</button>
+          <button class="primary-button" id="add-product">+ Add Product</button>
+        </div>
+        <div id="org-tree" class="org-tree"></div>
+      </section>
+
+      <section id="voc-view" class="view">
+        <section class="filters compact">
+          <div class="segmented" id="voc-tabs">
+            <button class="active" data-category="all">All</button>
+            <button data-category="detractor">Detractors</button>
+            <button data-category="passive">Passives</button>
+            <button data-category="promoter">Promoters</button>
+          </div>
+          <input id="voc-search" type="search" placeholder="Search customer or comment..." />
+          <select id="voc-sort">
+            <option value="newest">Newest</option>
+            <option value="lowest">Lowest score</option>
+            <option value="sla">SLA risk first</option>
+          </select>
+        </section>
+        <div id="voc-grid" class="voc-grid"></div>
+      </section>
+
+      <section id="sources-view" class="view">
+        <div class="source-layout">
+          <article class="panel">
+            <h2>Current Workflow</h2>
+            <ol class="timeline">
+              <li>Send survey form to each department.</li>
+              <li>Store result in Blue board card checklist.</li>
+              <li>Copy data into Notion for outsource caller.</li>
+              <li>Outsource calls customer and fills card details.</li>
+              <li>Responsible team follows up and closes SLA.</li>
+            </ol>
+          </article>
+          <article class="panel">
+            <h2>Target Sources</h2>
+            <div class="source-card">
+              <strong>Product / Service NPS</strong>
+              <span>CTM, Dev, Engineer, PM, PS and future teams.</span>
+            </div>
+            <div class="source-card">
+              <strong>Event / Workshop NPS</strong>
+              <span>Metasurvey export from seminar, workshop and training events.</span>
+            </div>
+            <div class="source-card">
+              <strong>Manual Import</strong>
+              <span>CSV upload while Blue/Notion/Metasurvey integration is not ready.</span>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>CSV Import Prototype</h2>
+            <p class="muted">Expected columns: customer, product, team, responsible, score, comment, source, date</p>
+            <input type="file" id="csv-input" accept=".csv,text/csv" />
+            <pre id="import-result">No file imported yet.</pre>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

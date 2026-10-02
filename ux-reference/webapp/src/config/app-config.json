@@ -1,0 +1,79 @@
+{
+  "appName": "Ragnar NPS Operation Center",
+  "organization": "Ragnar Corporation",
+  "defaultView": "dashboard",
+  "primaryActionColor": "#F04141",
+  "locale": "th-TH",
+  "periods": {
+    "monthFormat": "MMM YYYY",
+    "quarterFormat": "Q{quarter}/{year}",
+    "allowManualOverride": true
+  },
+  "navigation": [
+    { "id": "dashboard", "label": "Dashboard", "group": "Overview" },
+    { "id": "add-result", "label": "Survey Management", "group": "Data Collection" },
+    { "id": "responses", "label": "Responses", "group": "Data Collection" },
+    { "id": "response-center", "label": "Response Center", "group": "Data Collection" },
+    { "id": "products-teams", "label": "Products & Teams", "group": "Configuration" },
+    { "id": "settings", "label": "Settings", "group": "Configuration" }
+  ],
+  "surveyTypes": [
+    { "id": "satisfaction", "label": "Customer Satisfaction", "shortLabel": "Customer Sat", "defaultMetrics": ["NPS", "CSAT", "Topics"] },
+    { "id": "event", "label": "Event Feedback", "shortLabel": "Event Feedback", "defaultMetrics": ["NPS", "Topics"] }
+  ],
+  "products": [
+    {
+      "name": "t-reg",
+      "teams": ["CTM", "Dev", "PS"]
+    },
+    {
+      "name": "SOC",
+      "teams": ["Engineer", "PM"]
+    },
+    {
+      "name": "Cybersec",
+      "teams": ["Engineer"]
+    },
+    {
+      "name": "Security Awareness Program",
+      "teams": ["Project Management"]
+    }
+  ],
+  "sources": [
+    { "id": "manual", "label": "Manual Entry" },
+    { "id": "upload", "label": "Upload File" },
+    { "id": "metasurvey", "label": "Metasurvey" },
+    { "id": "blue-board", "label": "Blue Board" },
+    { "id": "notion", "label": "Notion" }
+  ],
+  "quarters": ["Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025", "Q1 2026", "Q2 2026", "Q3 2026", "Q4 2026"],
+  "npsTypes": [
+    { "id": "satisfaction", "label": "Customer Satisfaction" },
+    { "id": "event", "label": "Event" }
+  ],
+  "npsSegments": [
+    { "id": "detractor", "label": "Detractor", "min": 0, "max": 6 },
+    { "id": "passive", "label": "Passive", "min": 7, "max": 8 },
+    { "id": "promoter", "label": "Promoter", "min": 9, "max": 10 }
+  ],
+  "caseStatuses": [
+    "Open",
+    "Assigned",
+    "Calling",
+    "Waiting Owner",
+    "Resolved"
+  ],
+  "upload": {
+    "acceptedFileTypes": [".csv", ".xlsx", ".tsv"],
+    "requiredFields": [
+      "customer_name",
+      "nps_score",
+      "comment",
+      "product_name",
+      "team_name",
+      "submitted_at",
+      "source"
+    ]
+  }
+}
+

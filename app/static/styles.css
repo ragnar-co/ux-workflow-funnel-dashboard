@@ -1,0 +1,552 @@
+/* Design tokens adapted from config/design-tokens.json (Ragnar visual reference). */
+:root {
+  --font-primary: "LINE Seed Sans Thai", Inter, "Noto Sans Thai", Arial, sans-serif;
+  --color-bg: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-text: #2F3A4A;
+  --color-muted: #8A95A8;
+  --color-line: #E7EBF0;
+  --color-blue: #2F80ED;
+  --color-blue-soft: #EAF4FF;
+  --color-green: #45C58A;
+  --color-green-soft: #E2F9EF;
+  --color-amber: #F7B733;
+  --color-amber-soft: #FFF4D8;
+  --color-red: #D1393E;
+  --color-red-soft: #FBE7E8;
+  --radius-card: 14px;
+  --radius-button: 8px;
+  --radius-input: 8px;
+  --sidebar-width: 250px;
+  --topbar-height: 68px;
+  --page-padding: 24px;
+  --card-gap: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex: 0 0 var(--sidebar-width);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-line);
+  padding: 20px 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 20px 8px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-button);
+  background: var(--color-blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-link {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: var(--radius-button);
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  background: var(--color-bg);
+}
+
+.nav-link.is-active {
+  background: var(--color-blue-soft);
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.nav-link:focus-visible,
+.btn:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: var(--topbar-height);
+  flex: 0 0 var(--topbar-height);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--page-padding);
+}
+
+.page-title {
+  font-size: 18px;
+  margin: 0;
+}
+
+.dataset-chip {
+  font-size: 12px;
+  color: var(--color-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+.dataset-chip.is-active {
+  color: var(--color-green);
+  background: var(--color-green-soft);
+  border-color: transparent;
+}
+
+.content {
+  padding: var(--page-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+.view[hidden] { display: none; }
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-line);
+  padding: 20px;
+}
+
+.card-title {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+}
+
+.card-hint {
+  margin: 0 0 16px 0;
+  color: var(--color-muted);
+  font-size: 12.5px;
+}
+
+.field-hint {
+  display: block;
+  color: var(--color-muted);
+  font-size: 11.5px;
+  margin-top: 4px;
+}
+
+.field-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.filter-row {
+  display: flex;
+  gap: var(--card-gap);
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+}
+
+.filter-field label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+select[multiple] {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-input);
+  padding: 4px;
+  font: inherit;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Searchable multi-select combobox (replaces plain <select multiple>) */
+.combo {
+  position: relative;
+}
+
+.combo-control {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-input);
+  padding: 6px 8px;
+  background: var(--color-surface);
+  min-height: 40px;
+}
+
+.combo-control:focus-within {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 1px;
+}
+
+.combo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.combo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-blue-soft);
+  color: var(--color-blue);
+  border-radius: 999px;
+  padding: 3px 8px 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.combo-chip button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0;
+}
+
+.combo-input {
+  flex: 1;
+  min-width: 100px;
+  border: none;
+  outline: none;
+  font: inherit;
+  background: transparent;
+  color: var(--color-text);
+  padding: 4px 2px;
+}
+
+.combo-clear-btn {
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-button);
+}
+
+.combo-clear-btn:hover {
+  color: var(--color-red);
+  background: var(--color-bg);
+}
+
+.combo-listbox {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-input);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.combo-listbox[hidden] {
+  display: none;
+}
+
+.combo-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.combo-option:hover,
+.combo-option.is-active {
+  background: var(--color-bg);
+}
+
+.combo-option.is-selected {
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.combo-option .combo-check {
+  visibility: hidden;
+}
+
+.combo-option.is-selected .combo-check {
+  visibility: visible;
+}
+
+.combo-empty {
+  padding: 8px 10px;
+  color: var(--color-muted);
+  font-size: 12.5px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn {
+  font: inherit;
+  border-radius: var(--radius-button);
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--color-blue);
+  color: #fff;
+}
+
+.btn-primary:hover { background: #2569c4; }
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--color-line);
+  color: var(--color-text);
+}
+
+.btn-ghost:hover { background: var(--color-bg); }
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table th, .data-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-line);
+  white-space: nowrap;
+}
+
+.data-table th {
+  color: var(--color-muted);
+  font-weight: 600;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.data-table tbody tr.is-selectable {
+  cursor: pointer;
+}
+
+.data-table tbody tr.is-selectable:hover {
+  background: var(--color-bg);
+}
+
+.data-table tbody tr.is-selected {
+  background: var(--color-blue-soft);
+}
+
+.empty-row {
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.bar-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bar-track {
+  flex: 1;
+  min-width: 80px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-line);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--color-blue);
+}
+
+.bar-fill.is-dropoff {
+  background: var(--color-red);
+}
+
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: var(--radius-card);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: var(--color-amber-soft);
+  border: 1px solid var(--color-amber);
+  font-size: 13px;
+}
+
+.callout-icon {
+  font-weight: 700;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-pill.passed {
+  background: var(--color-green-soft);
+  color: var(--color-green);
+}
+
+.status-pill.failed {
+  background: var(--color-red-soft);
+  color: var(--color-red);
+}
+
+.upload-result {
+  margin-top: 16px;
+}
+
+.error-list {
+  margin: 10px 0 0 0;
+  padding-left: 20px;
+  color: var(--color-red);
+  font-size: 12.5px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.meta-item {
+  background: var(--color-bg);
+  border-radius: var(--radius-button);
+  padding: 10px 12px;
+}
+
+.meta-item .meta-label {
+  display: block;
+  color: var(--color-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.meta-item .meta-value {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1B2027;
+    --color-surface: #232A33;
+    --color-text: #E7EBF0;
+    --color-muted: #8A95A8;
+    --color-line: #333C48;
+    --color-blue-soft: #1D3A5C;
+    --color-green-soft: #1C3A2E;
+    --color-amber-soft: #4A3A14;
+    --color-red-soft: #4A2326;
+  }
+}
+
+@media (max-width: 860px) {
+  .shell { flex-direction: column; }
+  .sidebar { width: 100%; flex-basis: auto; }
+  .filter-row { flex-direction: column; }
+}

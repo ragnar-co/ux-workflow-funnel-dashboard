@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UX Workflow Funnel Dashboard</title>
+<link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">UX</span>
+      <span class="brand-name">Workflow Funnel</span>
+    </div>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        <li>
+          <button class="nav-link is-active" data-view="overview" type="button">
+            Workflow Overview
+          </button>
+        </li>
+        <li>
+          <button class="nav-link" data-view="import" type="button">
+            Import &amp; Validate
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1 class="page-title" id="page-title">Workflow Overview</h1>
+      <div id="dataset-chip" class="dataset-chip" role="status" aria-live="polite">
+        No active dataset
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- Workflow Overview view -->
+      <section id="view-overview" class="view">
+
+        <div class="card filter-card">
+          <h2 class="card-title">Filter scope</h2>
+          <p class="card-hint">Optional. Narrow by organization and/or month. Changing a filter recomputes every metric below from the same scope.</p>
+          <div class="filter-row">
+            <div class="filter-field combo" id="combo-org">
+              <label for="combo-org-input">Organization</label>
+              <div class="combo-control">
+                <ul class="combo-chips" id="combo-org-chips"></ul>
+                <input
+                  type="text"
+                  id="combo-org-input"
+                  class="combo-input"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-autocomplete="list"
+                  aria-controls="combo-org-listbox"
+                  aria-describedby="filter-org-hint"
+                  placeholder="Search organizations…"
+                  autocomplete="off"
+                />
+                <button type="button" class="combo-clear-btn" data-combo-clear="org" aria-label="Clear organization selection">×</button>
+              </div>
+              <ul class="combo-listbox" id="combo-org-listbox" role="listbox" aria-multiselectable="true" hidden></ul>
+              <span id="filter-org-hint" class="field-hint">Type to search. Click or Enter to select. Empty = all organizations.</span>
+            </div>
+            <div class="filter-field combo" id="combo-period">
+              <label for="combo-period-input">Month</label>
+              <div class="combo-control">
+                <ul class="combo-chips" id="combo-period-chips"></ul>
+                <input
+                  type="text"
+                  id="combo-period-input"
+                  class="combo-input"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-autocomplete="list"
+                  aria-controls="combo-period-listbox"
+                  aria-describedby="filter-period-hint"
+                  placeholder="Search months…"
+                  autocomplete="off"
+                />
+                <button type="button" class="combo-clear-btn" data-combo-clear="period" aria-label="Clear month selection">×</button>
+              </div>
+              <ul class="combo-listbox" id="combo-period-listbox" role="listbox" aria-multiselectable="true" hidden></ul>
+              <span id="filter-period-hint" class="field-hint">Type to search. Click or Enter to select. Empty = all months.</span>
+            </div>
+          </div>
+          <div class="filter-actions">
+            <button id="apply-filters" type="button" class="btn btn-primary">Apply filters</button>
+            <button id="clear-filters" type="button" class="btn btn-ghost">Clear filters</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Workflow completion performance</h2>
+          <p class="card-hint">Final-step completed count ÷ first-step started count, within the active filter scope. Counts are aggregate source counts, not unique users.</p>
+          <div class="table-wrap">
+            <table class="data-table" id="workflow-table">
+              <thead>
+                <tr>
+                  <th scope="col">Workflow</th>
+                  <th scope="col">Started</th>
+                  <th scope="col">Completed</th>
+                  <th scope="col">Completion rate</th>
+                  <th scope="col"><span class="sr-only">Select</span></th>
+                </tr>
+              </thead>
+              <tbody id="workflow-table-body">
+                <tr><td colspan="5" class="empty-row">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" id="funnel-card">
+          <h2 class="card-title">Selected workflow funnel detail</h2>
+          <p class="card-hint">Select a workflow above to see its ordered step funnel.</p>
+          <div id="highest-dropoff-callout" class="callout" hidden></div>
+          <div class="table-wrap">
+            <table class="data-table" id="funnel-table">
+              <thead>
+                <tr>
+                  <th scope="col">Step</th>
+                  <th scope="col">Step name</th>
+                  <th scope="col">Started</th>
+                  <th scope="col">Completed</th>
+                  <th scope="col">Drop-off count</th>
+                  <th scope="col">Drop-off rate</th>
+                </tr>
+              </thead>
+              <tbody id="funnel-table-body">
+                <tr><td colspan="6" class="empty-row">No workflow selected.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Import & Validate view -->
+      <section id="view-import" class="view" hidden>
+
+        <div class="card">
+          <h2 class="card-title">Upload CSV</h2>
+          <p class="card-hint">Required columns: organization_id, period_month, workflow_name, step_order, step_name, started_count, completed_count. A failed upload never replaces the active dataset.</p>
+          <form id="upload-form">
+            <label for="upload-file" class="field-label">CSV file</label>
+            <input id="upload-file" name="file" type="file" accept=".csv" required />
+            <div class="filter-actions">
+              <button type="submit" class="btn btn-primary">Validate &amp; load</button>
+            </div>
+          </form>
+          <div id="upload-result" class="upload-result" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Active dataset</h2>
+          <div id="active-dataset-detail">Loading…</div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="/assets/app.js"></script>
+</body>
+</html>

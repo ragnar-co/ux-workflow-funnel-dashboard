@@ -1,0 +1,407 @@
+<meta charset="utf-8">
+<title>Ragnar NPS — Responses</title>
+<style>
+  :root{
+    --bg:#F4F5F7; --surface:#FFFFFF; --ink:#2F3A4A; --muted:#8A95A8; --line:#E7EBF0;
+    --red:#F04141; --red-soft:#FFE5E8;
+    --green:#45C58A; --green-soft:#E2F9EF;
+    --amber:#F7B733; --amber-soft:#FFF4D8;
+    --pink:#F65F99; --pink-soft:#FDE4EB;
+    --blue:#2F80ED; --blue-soft:#EAF4FF;
+    --shadow: 0 1px 2px rgba(24,31,43,.04), 0 8px 24px rgba(24,31,43,.06);
+    --radius-card:16px; --radius-ctrl:9px;
+  }
+  :root[data-theme="dark"]{
+    --bg:#171A21; --surface:#20242E; --ink:#EDEFF3; --muted:#8B93A3; --line:#2B3040;
+    --red:#FF6161; --red-soft:rgba(255,97,97,.14);
+    --green:#57D9A3; --green-soft:rgba(87,217,163,.14);
+    --amber:#FFC966; --amber-soft:rgba(255,201,102,.14);
+    --pink:#FF7EB2; --pink-soft:rgba(255,126,178,.14);
+    --blue:#5B9BF5; --blue-soft:rgba(91,155,245,.14);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#171A21; --surface:#20242E; --ink:#EDEFF3; --muted:#8B93A3; --line:#2B3040;
+      --red:#FF6161; --red-soft:rgba(255,97,97,.14);
+      --green:#57D9A3; --green-soft:rgba(87,217,163,.14);
+      --amber:#FFC966; --amber-soft:rgba(255,201,102,.14);
+      --pink:#FF7EB2; --pink-soft:rgba(255,126,178,.14);
+      --blue:#5B9BF5; --blue-soft:rgba(91,155,245,.14);
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:Inter,"Noto Sans Thai","Leelawadee UI",system-ui,-apple-system,sans-serif;
+    font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased;}
+  .shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh;}
+
+  /* ---------- sidebar ---------- */
+  .sidebar{background:var(--surface);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:22px;}
+  .brand{display:flex;align-items:center;gap:11px;padding:2px 8px;}
+  .brand-mark{width:34px;height:34px;border-radius:10px;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px;flex-shrink:0;}
+  .brand-name{font-size:14px;font-weight:700;line-height:1.25;}
+  .brand-sub{font-size:11.5px;color:var(--muted);line-height:1.25;}
+  nav{display:flex;flex-direction:column;gap:2px;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-size:13.5px;color:var(--muted);font-weight:500;}
+  .nav-item svg{width:17px;height:17px;flex-shrink:0;}
+  .nav-item.active{background:var(--pink-soft);color:var(--red);font-weight:700;}
+
+  /* ---------- main ---------- */
+  main{padding:26px 34px 40px;min-width:0;}
+  .topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:20px;}
+  .page-title{font-size:23px;font-weight:800;letter-spacing:-.2px;margin:0 0 4px;}
+  .page-sub{font-size:13.5px;color:var(--muted);margin:0;}
+  .topbar-right{display:flex;align-items:center;gap:18px;}
+  .view-as{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);font-weight:600;}
+  .select{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--radius-ctrl);
+    padding:7px 12px;font-size:13px;font-weight:600;font-family:inherit;}
+  .sync{text-align:right;}
+  .sync-row{display:flex;align-items:center;gap:7px;justify-content:flex-end;font-size:12.5px;font-weight:700;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;}
+  .sync-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+  /* ---------- filter card ---------- */
+  .filter-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-card);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:18px;}
+  .filter-row1{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .search{flex:1;position:relative;}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--muted);}
+  .search input{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:var(--radius-ctrl);
+    padding:10px 14px 10px 36px;font-size:13.5px;color:var(--ink);font-family:inherit;}
+  .search input::placeholder{color:var(--muted);}
+  .pills{display:flex;gap:6px;flex-shrink:0;}
+  .pill{border:1px solid var(--line);background:var(--surface);color:var(--muted);font-weight:700;font-size:12.5px;
+    padding:8px 14px;border-radius:999px;white-space:nowrap;}
+  .pill.active{background:var(--red);border-color:var(--red);color:#fff;}
+  .filter-row2{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  .chip-select{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;
+    padding:7px 13px;font-size:12.5px;font-weight:600;font-family:inherit;}
+  .count-txt{font-size:12.5px;color:var(--muted);font-weight:600;margin-left:6px;}
+  .reset-link{font-size:12.5px;font-weight:700;color:var(--red);background:none;border:none;padding:0;}
+  .spacer{flex:1;}
+  .view-toggle{display:flex;border:1px solid var(--line);border-radius:999px;padding:2px;gap:2px;flex-shrink:0;}
+  .view-toggle span{font-size:12px;font-weight:700;padding:6px 14px;border-radius:999px;color:var(--muted);}
+  .view-toggle span.active{background:var(--red);color:#fff;}
+
+  /* ---------- content split ---------- */
+  .split{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;align-items:start;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-card);box-shadow:var(--shadow);}
+
+  /* KPIs */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px 18px 6px;}
+  .kpi{border-radius:12px;padding:13px 14px;display:flex;flex-direction:column;gap:8px;}
+  .kpi-icon{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;}
+  .kpi-icon svg{width:14px;height:14px;}
+  .kpi-val{font-size:22px;font-weight:800;line-height:1;}
+  .kpi-label{font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.02em;}
+  .kpi.total{background:var(--bg);} .kpi.total .kpi-icon{background:var(--line);color:var(--ink);}
+  .kpi.promoter{background:var(--green-soft);} .kpi.promoter .kpi-icon{background:var(--green);color:#fff;} .kpi.promoter .kpi-val{color:var(--green);}
+  .kpi.passive{background:var(--amber-soft);} .kpi.passive .kpi-icon{background:var(--amber);color:#fff;} .kpi.passive .kpi-val{color:#946a00;}
+  .kpi.detractor{background:var(--pink-soft);} .kpi.detractor .kpi-icon{background:var(--pink);color:#fff;} .kpi.detractor .kpi-val{color:var(--pink);}
+
+  /* list */
+  .list-head{display:grid;grid-template-columns:26px 1.7fr 60px 1fr 100px 92px;gap:10px;padding:14px 18px 10px;
+    font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-top:1px solid var(--line);margin-top:8px;}
+  .row{display:grid;grid-template-columns:26px 1.7fr 60px 1fr 100px 92px;gap:10px;align-items:center;
+    padding:13px 18px;border-top:1px solid var(--line);}
+  .row.selected{background:var(--pink-soft);}
+  .row input[type="checkbox"]{width:15px;height:15px;accent-color:var(--red);}
+  .who{display:flex;align-items:center;gap:10px;min-width:0;}
+  .avatar{width:32px;height:32px;border-radius:50%;background:var(--blue-soft);color:var(--blue);font-size:12px;font-weight:800;
+    display:grid;place-items:center;flex-shrink:0;}
+  .who-text{min-width:0;}
+  .who-name{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .who-comment{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;}
+  .score{font-size:14px;font-weight:800;}
+  .cat{display:inline-flex;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap;}
+  .cat.promoter{background:var(--green-soft);color:var(--green);}
+  .cat.passive{background:var(--amber-soft);color:#946a00;}
+  .cat.detractor{background:var(--pink-soft);color:var(--pink);}
+  .pt{font-size:12.5px;color:var(--ink);}
+  .pt small{display:block;color:var(--muted);font-size:11px;}
+  .source-tag{font-size:11px;font-weight:700;color:var(--ink);background:var(--bg);border:1px solid var(--line);
+    padding:3px 8px;border-radius:6px;white-space:nowrap;}
+  .date-txt{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap;}
+
+  /* detail panel */
+  .detail{padding:18px 20px 20px;position:sticky;top:26px;}
+  .detail-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .detail-nav-left{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;font-weight:700;}
+  .icon-btn{width:26px;height:26px;border-radius:7px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);background:var(--surface);}
+  .icon-btn svg{width:13px;height:13px;}
+  .detail-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px;}
+  .detail-title{font-size:19px;font-weight:800;letter-spacing:-.2px;line-height:1.2;text-wrap:balance;}
+  .detail-badges{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+  .score-big{font-size:15px;font-weight:800;}
+  .detail-sub{font-size:12.5px;color:var(--muted);margin-bottom:14px;}
+  .quote{background:var(--bg);border-radius:11px;padding:13px 15px;font-size:13px;line-height:1.65;color:var(--ink);
+    border-left:3px solid var(--red);margin-bottom:16px;}
+  .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-bottom:16px;}
+  .meta-item{display:flex;gap:8px;align-items:flex-start;}
+  .meta-item svg{width:14px;height:14px;color:var(--muted);margin-top:2px;flex-shrink:0;}
+  .meta-label{font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:1px;}
+  .meta-val{font-size:12.5px;font-weight:600;color:var(--ink);}
+  .themes-label{font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .theme-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+  .theme-tag{font-size:11.5px;font-weight:700;color:var(--blue);background:var(--blue-soft);padding:5px 10px;border-radius:999px;}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;padding-top:14px;border-top:1px solid var(--line);}
+  .btn{font-size:12.5px;font-weight:700;padding:9px 14px;border-radius:var(--radius-ctrl);border:1px solid var(--line);
+    background:var(--surface);color:var(--ink);}
+  .btn.primary{background:var(--red);border-color:var(--red);color:#fff;}
+
+  .oxa{overflow-x:auto;}
+</style>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">R</div>
+      <div>
+        <div class="brand-name">Ragnar NPS</div>
+        <div class="brand-sub">Operation Center</div>
+      </div>
+    </div>
+    <nav>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 13h8V3H3zM13 21h8V9h-8zM3 21h8v-5H3zM13 7h8V3h-8z"/></svg>Dashboard</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>NPS Management</div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Responses</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H8l-4 4z"/></svg>Response Center</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0"/></svg>Products &amp; Teams</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 21V10M12 21V4M19 21v-7"/></svg>Reports</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82 2 2 0 1 1-2.83 2.83 1.65 1.65 0 0 0-1.82-.33A1.65 1.65 0 0 0 14 21h-4a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33 2 2 0 1 1-2.83-2.83A1.65 1.65 0 0 0 4.6 15 1.65 1.65 0 0 0 3 13.35v-2.7A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82 2 2 0 1 1 2.83-2.83A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3h4a1.65 1.65 0 0 0 1 1.6 1.65 1.65 0 0 0 1.82-.33 2 2 0 1 1 2.83 2.83A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.6 1h0a1.65 1.65 0 0 0 0 4h0a1.65 1.65 0 0 0-1.6 1z"/></svg>Settings</div>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Responses</h1>
+        <p class="page-sub">Browse every confirmed NPS response and its comment.</p>
+      </div>
+      <div class="topbar-right">
+        <label class="view-as">View as
+          <select class="select"><option>NPS Owner</option></select>
+        </label>
+        <div class="sync">
+          <div class="sync-row"><span class="dot"></span>39 responses synced</div>
+          <div class="sync-sub">Last sync: 5 minutes ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-row1">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search customer, comment, or product...">
+        </div>
+        <div class="pills">
+          <span class="pill active">All</span>
+          <span class="pill">Promoter</span>
+          <span class="pill">Passive</span>
+          <span class="pill">Detractor</span>
+        </div>
+      </div>
+      <div class="filter-row2">
+        <select class="chip-select"><option>All products</option></select>
+        <select class="chip-select"><option>All quarters</option></select>
+        <select class="chip-select"><option>All sources</option></select>
+        <select class="chip-select"><option>Newest first</option></select>
+        <span class="count-txt">78 responses</span>
+        <button class="reset-link">Reset filters</button>
+        <div class="spacer"></div>
+        <div class="view-toggle"><span class="active">List</span><span>Board</span></div>
+      </div>
+    </div>
+
+    <div class="split">
+      <!-- LEFT: list -->
+      <div class="card">
+        <div class="kpi-grid">
+          <div class="kpi total">
+            <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+            <div class="kpi-val">78</div><div class="kpi-label">Total responses</div>
+          </div>
+          <div class="kpi promoter">
+            <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></div>
+            <div class="kpi-val">42</div><div class="kpi-label">Promoters</div>
+          </div>
+          <div class="kpi passive">
+            <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 15s1.5 1.5 3 1.5S15 15 15 15M9 9h.01M15 9h.01"/></svg></div>
+            <div class="kpi-val">24</div><div class="kpi-label">Passives</div>
+          </div>
+          <div class="kpi detractor">
+            <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2.5 18a2 2 0 001.8 3h15.4a2 2 0 001.8-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
+            <div class="kpi-val">12</div><div class="kpi-label">Detractors</div>
+          </div>
+        </div>
+
+        <div class="oxa">
+        <div style="min-width:640px;">
+          <div class="list-head">
+            <span></span><span>Customer / Respondent</span><span>Score</span><span>Product / Team</span><span>Source</span><span style="text-align:right;">Date</span>
+          </div>
+
+          <div class="row selected">
+            <input type="checkbox" checked>
+            <div class="who">
+              <div class="avatar">TI</div>
+              <div class="who-text">
+                <div class="who-name">Thai IOD Q3/26</div>
+                <div class="who-comment">ทีมงานให้ข้อมูลเรื่องเอกสารและ Consent ชัดเจนขึ้น ใช้งานต่อได้มั่นใจ</div>
+              </div>
+            </div>
+            <span class="score">9<span class="cat promoter" style="margin-left:6px;">Promoter</span></span>
+            <span class="pt">t-reg<small>CTM</small></span>
+            <span class="source-tag">blue-board</span>
+            <span class="date-txt">2026-09-19</span>
+          </div>
+
+          <div class="row">
+            <input type="checkbox">
+            <div class="who">
+              <div class="avatar">C2</div>
+              <div class="who-text">
+                <div class="who-name">Customer 02</div>
+                <div class="who-comment">ยังมีจุดที่ขั้นตอนซับซ้อน อยากให้หน้าจอทำงานเร็วและเข้าใจง่ายขึ้น</div>
+              </div>
+            </div>
+            <span class="score">6<span class="cat detractor" style="margin-left:6px;">Detractor</span></span>
+            <span class="pt">t-reg<small>Dev</small></span>
+            <span class="source-tag">blue-board</span>
+            <span class="date-txt">2026-09-18</span>
+          </div>
+
+          <div class="row">
+            <input type="checkbox">
+            <div class="who">
+              <div class="avatar">ST</div>
+              <div class="who-text">
+                <div class="who-name">Siripat Thammanoonkul</div>
+                <div class="who-comment">เนื้อหาดี กระชับ เข้าใจง่าย นำไปใช้ต่อได้จริง</div>
+              </div>
+            </div>
+            <span class="score">8<span class="cat passive" style="margin-left:6px;">Passive</span></span>
+            <span class="pt">t-reg<small>CTM</small></span>
+            <span class="source-tag">metasurvey</span>
+            <span class="date-txt">2026-09-15</span>
+          </div>
+
+          <div class="row">
+            <input type="checkbox">
+            <div class="who">
+              <div class="avatar">WB</div>
+              <div class="who-text">
+                <div class="who-name">Warangkana Boontam</div>
+                <div class="who-comment">ทำให้มองเห็นความสำคัญของ PDPA ในองค์กรมากขึ้น</div>
+              </div>
+            </div>
+            <span class="score">10<span class="cat promoter" style="margin-left:6px;">Promoter</span></span>
+            <span class="pt">t-reg<small>PS</small></span>
+            <span class="source-tag">notion</span>
+            <span class="date-txt">2026-09-12</span>
+          </div>
+
+          <div class="row">
+            <input type="checkbox">
+            <div class="who">
+              <div class="avatar">C5</div>
+              <div class="who-text">
+                <div class="who-name">Customer 05</div>
+                <div class="who-comment">พบปัญหาระหว่างใช้งานและใช้เวลานานกว่าจะได้รับการแก้ไข</div>
+              </div>
+            </div>
+            <span class="score">5<span class="cat detractor" style="margin-left:6px;">Detractor</span></span>
+            <span class="pt">SOC<small>Engineer</small></span>
+            <span class="source-tag">notion</span>
+            <span class="date-txt">2026-09-11</span>
+          </div>
+
+          <div class="row">
+            <input type="checkbox">
+            <div class="who">
+              <div class="avatar">KO</div>
+              <div class="who-text">
+                <div class="who-name">Klanarong Ora-in</div>
+                <div class="who-comment">แนะนำดีเนื้อหาครบถ้วน อยากให้มีคู่มือประกอบ</div>
+              </div>
+            </div>
+            <span class="score">7<span class="cat passive" style="margin-left:6px;">Passive</span></span>
+            <span class="pt">Cybersec<small>Engineer</small></span>
+            <span class="source-tag">manual</span>
+            <span class="date-txt">2026-09-09</span>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: detail -->
+      <div class="card detail">
+        <div class="detail-nav">
+          <div class="detail-nav-left">
+            <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></div>
+            1 of 78
+            <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="icon-btn">⋯</div>
+        </div>
+
+        <div class="detail-title-row">
+          <h2 class="detail-title">Thai IOD Q3/26</h2>
+          <div class="detail-badges">
+            <span class="score-big">9/10</span>
+            <span class="cat promoter">Promoter</span>
+          </div>
+        </div>
+        <p class="detail-sub">t-reg · CTM · คุณ สมชาย (CTM)</p>
+
+        <div class="quote">
+          "ทีมงานให้ข้อมูลเรื่องเอกสารและ Consent ชัดเจนขึ้น<br>ใช้งานต่อได้มั่นใจ"
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            <div><div class="meta-label">Product</div><div class="meta-val">t-reg</div></div>
+          </div>
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3"/><path d="M5 20a7 7 0 0114 0"/></svg>
+            <div><div class="meta-label">Team</div><div class="meta-val">CTM</div></div>
+          </div>
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+            <div><div class="meta-label">Owner</div><div class="meta-val">คุณ สมชาย (CTM)</div></div>
+          </div>
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>
+            <div><div class="meta-label">Source</div><div class="meta-val">blue-board</div></div>
+          </div>
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+            <div><div class="meta-label">Date</div><div class="meta-val">2026-09-19</div></div>
+          </div>
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V10M12 21V4M19 21v-7"/></svg>
+            <div><div class="meta-label">Quarter</div><div class="meta-val">Sep 2026 · Q3/2026</div></div>
+          </div>
+        </div>
+
+        <div class="themes-label">Detected themes</div>
+        <div class="theme-tags">
+          <span class="theme-tag">documentation</span>
+          <span class="theme-tag">consent</span>
+          <span class="theme-tag">ease of use</span>
+          <span class="theme-tag">support</span>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary">Assign</button>
+          <button class="btn">Add tag</button>
+          <button class="btn">Mark resolved</button>
+          <button class="btn">Open in Response Center</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
